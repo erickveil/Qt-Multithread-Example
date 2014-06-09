@@ -10,6 +10,7 @@ ExpensiveClass::ExpensiveClass(QString *ref_to_lock_value, QThread *owner_thread
 
 void ExpensiveClass::slotThreadStart()
 {
+    emit signalCrossThread(QString("Value changed using signals and slots."));
     this->_useLockToChange();
 
     QTimer *repeater = new QTimer(this);
@@ -33,4 +34,6 @@ bool ExpensiveClass::_useLockToChange()
     *_to_be_locked="Value changed from another thread via locking.";
     return true;
 }
+
+
 

@@ -12,6 +12,8 @@ MainClass::MainClass(QObject *parent) :
 
     cout<<value_for_lock.toStdString()<<endl;
     cout<<_value_for_signal.toStdString()<<endl;
+
+    connect (worker, SIGNAL(signalCrossThread(QString)),this,SLOT(slotCrossThread(QString)) );
 }
 
 MainClass::~MainClass()
@@ -51,6 +53,7 @@ bool MainClass::runJob()
 
 void MainClass::slotCrossThread(QString data)
 {
+    cout<<"Received signal: "<<data.toStdString()<<endl;
     this->_value_for_signal=data;
 }
 

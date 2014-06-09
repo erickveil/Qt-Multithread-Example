@@ -16,6 +16,7 @@ public:
     explicit ExpensiveClass(QString *ref_to_lock_value, QThread *owner_thread);
 
 signals:
+    void signalCrossThread(QString data);
 
 public slots:
     void slotThreadStart();
