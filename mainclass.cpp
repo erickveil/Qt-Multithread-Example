@@ -3,9 +3,15 @@
 MainClass::MainClass(QObject *parent) :
     QObject(parent)
 {
+    value_for_lock="Initial value before locking variable.";
+    _value_for_signal="Initial vlaue before signal variable change.";
+
     thread=new QThread();
-    worker=new ExpensiveClass(thread);
+    worker=new ExpensiveClass(&value_for_lock, thread);
     worker->moveToThread(thread);
+
+    cout<<value_for_lock.toStdString()<<endl;
+    cout<<_value_for_signal.toStdString()<<endl;
 }
 
 MainClass::~MainClass()
@@ -37,6 +43,14 @@ bool MainClass::runJob()
         }
     }
 
+    cout<<value_for_lock.toStdString()<<endl;
+    cout<<_value_for_signal.toStdString()<<endl;
     cout<<"Done."<<endl;
     return true;
 }
+
+void MainClass::slotCrossThread(QString data)
+{
+    this->_value_for_signal=data;
+}
+

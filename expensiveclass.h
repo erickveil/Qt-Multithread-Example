@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <iostream>
 #include <QThread>
+#include <QWriteLocker>
 
 using namespace std;
 
@@ -12,7 +13,7 @@ class ExpensiveClass : public QObject
 {
     Q_OBJECT
 public:
-    explicit ExpensiveClass(QThread *owner_thread);
+    explicit ExpensiveClass(QString *ref_to_lock_value, QThread *owner_thread);
 
 signals:
 
@@ -20,6 +21,11 @@ public slots:
     void slotThreadStart();
     void slotThreadFinished();
     void doProcess();
+
+private:
+    QReadWriteLock lock;
+    QString *_to_be_locked;
+    bool _useLockToChange();
 
 };
 
